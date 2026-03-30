@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pallet Arrangement — Khoo Kai Zheng</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f6f3;
+  --white: #ffffff;
+  --text: #1a1a1a;
+  --muted: #888;
+  --accent: #c9a84c;
+  --border: #e5e5e5;
+  --card: #ffffff;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; font-weight:300; -webkit-font-smoothing:antialiased; }
+a { color:inherit; text-decoration:none; }
+
+.wrap { max-width:880px; margin:0 auto; padding:0 28px 80px; }
+
+/* NAV */
+nav { display:flex; justify-content:space-between; align-items:center; padding:36px 0 0; margin-bottom:64px; animation:fadeUp .5s ease both; }
+.nav-logo { font-family:'Playfair Display',serif; font-size:17px; font-weight:700; }
+.nav-back { font-size:13px; color:var(--muted); display:flex; align-items:center; gap:6px; transition:color .15s; }
+.nav-back:hover { color:var(--text); }
+
+/* PAGE HEADER */
+.page-header { margin-bottom:60px; animation:fadeUp .5s .05s ease both; }
+.page-eyebrow { font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); margin-bottom:14px; display:flex; align-items:center; gap:10px; }
+.page-eyebrow::after { content:''; width:36px; height:1px; background:var(--border); }
+.page-title { font-family:'Playfair Display',serif; font-size:clamp(34px,5vw,50px); font-weight:700; line-height:1.08; letter-spacing:-0.02em; margin-bottom:16px; }
+.page-title span { color:var(--accent); }
+.page-lead { font-size:15px; line-height:1.75; color:#555; max-width:520px; margin-bottom:22px; }
+.page-tags { display:flex; flex-wrap:wrap; gap:7px; }
+.tag { font-size:11px; padding:4px 11px; border:1px solid var(--border); color:var(--muted); border-radius:1px; letter-spacing:0.04em; }
+
+/* DIVIDER */
+.divider { height:1px; background:var(--border); margin:48px 0; }
+
+/* SECTION LABEL */
+.section-label { font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); margin-bottom:18px; font-weight:400; }
+
+/* CALLOUT */
+.callout {
+  border-left:3px solid var(--accent);
+  background:var(--white);
+  border-top:1px solid var(--border);
+  border-right:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:20px 24px;
+  margin-bottom:40px;
+  font-size:14px;
+  line-height:1.7;
+  color:#444;
+  font-style:italic;
+  animation:fadeUp .5s .08s ease both;
+}
+.callout strong { font-style:normal; color:var(--text); font-weight:500; }
+
+/* TWO COL */
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:2px; margin-bottom:2px; animation:fadeUp .5s .1s ease both; }
+@media(max-width:580px){ .two-col{ grid-template-columns:1fr; } }
+
+.panel { background:var(--white); border:1px solid var(--border); padding:24px 26px; }
+.panel-title { font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:14px; font-weight:500; }
+.panel ul { list-style:none; display:flex; flex-direction:column; gap:9px; }
+.panel ul li { font-size:13.5px; color:#666; line-height:1.6; padding-left:16px; position:relative; }
+.panel ul li::before { content:'·'; position:absolute; left:0; color:var(--accent); font-weight:700; font-size:16px; top:-1px; }
+
+/* ROLE ROW */
+.role-row {
+  display:flex; align-items:center; gap:18px;
+  background:var(--white); border:1px solid var(--border);
+  padding:18px 22px; margin-bottom:2px;
+  animation:fadeUp .5s .12s ease both;
+}
+.role-badge { font-size:11px; padding:5px 13px; border:1px solid var(--border); color:var(--muted); letter-spacing:0.08em; border-radius:1px; white-space:nowrap; }
+.role-text { font-size:13.5px; color:#666; line-height:1.6; }
+@media(max-width:500px){ .role-row{ flex-direction:column; align-items:flex-start; } }
+
+/* STACK ROW */
+.stack-row { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:2px; animation:fadeUp .5s .14s ease both; }
+
+/* FEATURES */
+.features { display:grid; grid-template-columns:1fr 1fr; gap:2px; animation:fadeUp .5s .16s ease both; }
+@media(max-width:580px){ .features{ grid-template-columns:1fr; } }
+.feature { background:var(--white); border:1px solid var(--border); padding:22px 24px; transition:border-color .15s; }
+.feature:hover { border-color:#ccc; }
+.feature-num { font-size:10px; color:var(--accent); opacity:.55; letter-spacing:0.1em; margin-bottom:8px; font-family:'Inter',monospace; }
+.feature-title { font-size:14px; font-weight:500; margin-bottom:7px; color:var(--text); }
+.feature-desc { font-size:12.5px; color:var(--muted); line-height:1.65; }
+
+/* ALGO */
+.algo-block { background:var(--white); border:1px solid var(--border); overflow:hidden; animation:fadeUp .5s .18s ease both; }
+.algo-header { background:#f0ede6; border-bottom:1px solid var(--border); padding:14px 22px; display:flex; align-items:center; justify-content:space-between; }
+.algo-header-title { font-size:13px; font-weight:500; color:var(--text); }
+.algo-badge { font-size:10px; letter-spacing:0.1em; color:var(--accent); background:rgba(201,168,76,0.1); border:1px solid rgba(201,168,76,0.3); padding:3px 10px; border-radius:1px; }
+.algo-row { display:flex; border-bottom:1px solid var(--border); }
+.algo-row:last-child { border-bottom:none; }
+.algo-name { background:#faf9f6; border-right:1px solid var(--border); padding:18px 20px; min-width:190px; flex-shrink:0; }
+.algo-name-main { font-size:12.5px; color:var(--text); font-weight:500; margin-bottom:3px; }
+.algo-name-type { font-size:10.5px; color:var(--muted); letter-spacing:0.06em; }
+.algo-detail { padding:18px 22px; font-size:13px; color:#666; line-height:1.7; flex:1; }
+.algo-detail strong { color:var(--text); font-weight:500; }
+@media(max-width:560px){ .algo-row{ flex-direction:column; } .algo-name{ min-width:unset; border-right:none; border-bottom:1px solid var(--border); } }
+
+/* IMPACT */
+.impact-row { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; animation:fadeUp .5s .2s ease both; }
+@media(max-width:500px){ .impact-row{ grid-template-columns:1fr; } }
+.impact-card { background:var(--white); border:1px solid var(--border); padding:22px 20px; position:relative; overflow:hidden; }
+.impact-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:var(--accent); opacity:.4; }
+.impact-icon { font-size:22px; margin-bottom:10px; }
+.impact-text { font-size:13px; color:var(--muted); line-height:1.6; }
+
+/* ARCH */
+.arch { background:var(--white); border:1px solid var(--border); overflow:hidden; animation:fadeUp .5s .22s ease both; }
+.arch-row { display:flex; align-items:flex-start; border-bottom:1px solid var(--border); }
+.arch-row:last-child { border-bottom:none; }
+.arch-arrow { padding:16px 14px; font-size:12px; color:var(--accent); border-right:1px solid var(--border); flex-shrink:0; background:#faf9f6; }
+.arch-name { padding:16px 18px; min-width:185px; flex-shrink:0; font-size:12px; color:#444; font-weight:500; border-right:1px solid var(--border); font-family:monospace; letter-spacing:0.02em; }
+.arch-detail { padding:16px 20px; font-size:12.5px; color:var(--muted); line-height:1.65; flex:1; }
+@media(max-width:600px){ .arch-row{ flex-direction:column; } .arch-name{ min-width:unset; border-right:none; border-bottom:1px solid var(--border); } .arch-arrow{ border-right:none; border-bottom:1px solid var(--border); } }
+
+/* FOOTER */
+footer { margin-top:60px; padding-top:28px; font-size:12px; color:var(--muted); display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border); animation:fadeUp .5s .24s ease both; }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav>
+    <div class="nav-logo"></div>
+    <a class="nav-back" href="index.html">← Back to Portfolio</a>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="page-eyebrow">SAP B1 Add-On · Solo Project</div>
+    <h1 class="page-title">Pallet<br><span>Arrangement</span></h1>
+    <p class="page-lead">Automated end-to-end warehouse packing workflow inside SAP Business One — eliminating manual pallet planning and improving space utilisation.</p>
+    <div class="page-tags">
+      <span class="tag">SAP Business One</span>
+      <span class="tag">VB.NET</span>
+      <span class="tag">SAP HANA</span>
+      <span class="tag">MS SQL Server</span>
+      <span class="tag">UDO</span>
+    </div>
+  </div>
+
+  <!-- CALLOUT -->
+  <div class="callout">
+    "Handled complex trade-offs between weight and space using <strong>multi-criteria decision logic</strong> — balancing pallet load distribution across multiple optimisation objectives simultaneously."
+  </div>
+
+  <!-- PROBLEM / SOLUTION -->
+  <div class="section-label">Problem & Solution</div>
+  <div class="two-col">
+    <div class="panel">
+      <div class="panel-title">The Problem</div>
+      <ul>
+        <li>Manual pallet arrangement was slow and inconsistent</li>
+        <li>No link between delivery schedules, packing, and inventory transfer</li>
+        <li>Weight and space trade-offs left to human judgment</li>
+        <li>No pack status visibility across delivery orders</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="panel-title">The Solution</div>
+      <ul>
+        <li>Converts delivery schedules directly into pallet arrangements in SAP B1</li>
+        <li>Auto-generates packing lists from confirmed pallet plans</li>
+        <li>Applies sorting and ranking algorithms to optimise load</li>
+        <li>Real-time pack status written back to the delivery schedule</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- FEATURES -->
+  <div class="section-label">Key Features</div>
+  <div class="features">
+    <div class="feature">
+      <div class="feature-num">01</div>
+      <div class="feature-title">Automated Pallet Generation</div>
+      <div class="feature-desc">Converts delivery schedule lines into pallet arrangements — respecting weight, height, and mix-compatibility from item master data.</div>
+    </div>
+    <div class="feature">
+      <div class="feature-num">02</div>
+      <div class="feature-title">Packing List Creation</div>
+      <div class="feature-desc">Generates a Packing List UDO from confirmed pallet plans with full SO line traceability. No manual re-entry.</div>
+    </div>
+    <div class="feature">
+      <div class="feature-num">03</div>
+      <div class="feature-title">Live Delivery Schedule Picker</div>
+      <div class="feature-desc">Reads exclusions from the in-memory datasource in real time — zero duplicate scheduling across deliveries.</div>
+    </div>
+    <div class="feature">
+      <div class="feature-num">04</div>
+      <div class="feature-title">Pack Status Tracking</div>
+      <div class="feature-desc">Automatically updates OPEN → IN_PROGRESS → COMPLETED status on the delivery schedule as packing progresses.</div>
+    </div>
+    <div class="feature">
+      <div class="feature-num">05</div>
+      <div class="feature-title">Inventory Transfer Push</div>
+      <div class="feature-desc">One-click push from a saved Packing List into SAP's Inventory Transfer Request — item codes, quantities, and SO references auto-filled.</div>
+    </div>
+    <div class="feature">
+      <div class="feature-num">06</div>
+      <div class="feature-title">Dual DB Compatibility</div>
+      <div class="feature-desc">Auto-detects SAP HANA vs MS SQL Server at runtime — deployable on either database with no code changes.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ALGORITHMS -->
+  <div class="section-label">Algorithms & Logic</div>
+  <div class="algo-block">
+    <div class="algo-header">
+      <div class="algo-header-title">Optimisation Engine</div>
+      <div class="algo-badge">Technical Depth</div>
+    </div>
+    <div class="algo-row">
+      <div class="algo-name">
+        <div class="algo-name-main">Bubble Sort</div>
+        <div class="algo-name-type">Ordering / Priority</div>
+      </div>
+      <div class="algo-detail">Orders items by <strong>weight and priority</strong> before pallet assignment. Heavier items placed first for a stable load base — preventing top-heavy arrangements during transit.</div>
+    </div>
+    <div class="algo-row">
+      <div class="algo-name">
+        <div class="algo-name-main">Non-Dominated Sorting</div>
+        <div class="algo-name-type">Multi-Criteria Ranking</div>
+      </div>
+      <div class="algo-detail">Rank-based approach that <strong>balances weight, space, and mix constraints simultaneously</strong> — items non-dominated across all criteria are ranked first, mirroring multi-objective optimisation (NSGA-II style) for consistently balanced pallet loads.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- IMPACT -->
+  <div class="section-label">Impact</div>
+  <div class="impact-row">
+    <div class="impact-card">
+      <div class="impact-icon">↓</div>
+      <div class="impact-text">Manual workload in pallet planning significantly reduced</div>
+    </div>
+    <div class="impact-card">
+      <div class="impact-icon">✓</div>
+      <div class="impact-text">Human errors eliminated in packing list creation</div>
+    </div>
+    <div class="impact-card">
+      <div class="impact-icon">⚡</div>
+      <div class="impact-text">Packing efficiency improved through algorithm-driven load distribution</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ARCHITECTURE -->
+  <div class="section-label">Module Architecture</div>
+  <div class="arch">
+    <div class="arch-row">
+      <div class="arch-arrow">→</div>
+      <div class="arch-name">XCR_ORDR2</div>
+      <div class="arch-detail">Parent orchestrator — injects buttons into the Delivery Schedule form and manages all child form lifecycle.</div>
+    </div>
+    <div class="arch-row">
+      <div class="arch-arrow">→</div>
+      <div class="arch-name">XCR_ORDR2_Form</div>
+      <div class="arch-detail">Sales Order selector. Builds live SQL exclusion from the in-memory datasource — already-scheduled items never re-appear.</div>
+    </div>
+    <div class="arch-row">
+      <div class="arch-arrow">→</div>
+      <div class="arch-name">XCR_DeliverySchedule</div>
+      <div class="arch-detail">Delivery schedule picker. Loads non-completed schedules and populates the pallet pack grid on import.</div>
+    </div>
+    <div class="arch-row">
+      <div class="arch-arrow">→</div>
+      <div class="arch-name">XCR_PalletArrangement</div>
+      <div class="arch-detail">Core planning engine. Applies sorting and ranking logic, stages deferred save payload for atomic commit after Packing List Add.</div>
+    </div>
+    <div class="arch-row">
+      <div class="arch-arrow">→</div>
+      <div class="arch-name">PACKING</div>
+      <div class="arch-detail">Packing List handler. Commits pallet writes, resolves SO references, updates delivery schedule status, and closes the arrangement form.</div>
+    </div>
+  </div>
+
+  <footer>
+    <span>← <a href="index.html" style="color:var(--muted)">Back to Portfolio</a></span>
+    <span>Khoo Kai Zheng · 2026</span>
+  </footer>
+
+</div>
+</body>
+</html>
